@@ -1,6 +1,9 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 using TodoProject.BusinessLayer.Abstract;
 using TodoProject.BusinessLayer.Concrete;
 using TodoProject.DataAccessLayer.Abstract;
@@ -34,6 +37,29 @@ builder.Services.AddDbContext<Context>();
 // entitylayer altýndaki concrete de bu ikisi oluþturuldu
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 
+
+// Jwt
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+{
+    opt.RequireHttpsMetadata = false;
+    opt.TokenValidationParameters = new TokenValidationParameters()
+    {   // bazi bilgileri appsettingsden alacak -- key vs.
+        // yayýnlayan dinleyenler -- signing key : gizli anahtar iþte -- lifetime : ne kadar sure sonra expire olsun
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        ValidateIssuer = true,
+        ValidateAudience = true
+    };
+});
+
+
+
+
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("TodoApiCors", opts =>
@@ -41,6 +67,9 @@ builder.Services.AddCors(opt =>
         opts.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
+
+// automapper
+builder.Services.AddAutoMapper(typeof(Program));
 
 
 var app = builder.Build();
@@ -55,6 +84,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// auth added
+app.UseAuthentication();
 
 app.MapControllers();
 
