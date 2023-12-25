@@ -7,13 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{7D3F2A21-621
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoProject.WebApi", "TodoProject.WebApi\TodoProject.WebApi\TodoProject.WebApi.csproj", "{2CAEEDB8-D459-4168-A2A6-ED51277B79A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoProject.DataAccessLayer", "TodoProject.WebApi\TodoProject.DataAccessLayer\TodoProject.DataAccessLayer.csproj", "{D20EB971-C112-48F8-ADC8-B86FB0720C38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoProject.DataAccessLayer", "TodoProject.WebApi\TodoProject.DataAccessLayer\TodoProject.DataAccessLayer.csproj", "{D20EB971-C112-48F8-ADC8-B86FB0720C38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoProject.EntityLayer", "TodoProject.WebApi\TodoProject.EntityLayer\TodoProject.EntityLayer.csproj", "{925E149C-EF2D-4BA1-B1CC-1D10BB2A9CFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoProject.EntityLayer", "TodoProject.WebApi\TodoProject.EntityLayer\TodoProject.EntityLayer.csproj", "{925E149C-EF2D-4BA1-B1CC-1D10BB2A9CFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoProject.BusinessLayer", "TodoProject.WebApi\TodoProject.BusinessLayer\TodoProject.BusinessLayer.csproj", "{A22C4363-3258-477E-B326-99D4AD338452}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoProject.BusinessLayer", "TodoProject.WebApi\TodoProject.BusinessLayer\TodoProject.BusinessLayer.csproj", "{A22C4363-3258-477E-B326-99D4AD338452}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoProject.DtoLayer", "TodoProject.WebApi\TodoProject.DtoLayer\TodoProject.DtoLayer.csproj", "{AB74B41A-BB28-4035-88A5-89F1066FE6BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoProject.DtoLayer", "TodoProject.WebApi\TodoProject.DtoLayer\TodoProject.DtoLayer.csproj", "{AB74B41A-BB28-4035-88A5-89F1066FE6BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoProject.Core", "TodoProject.WebApi\TodoProject.Core\TodoProject.Core\TodoProject.Core.csproj", "{A850C4D5-E200-4496-9CB6-495A8EC256F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{AB74B41A-BB28-4035-88A5-89F1066FE6BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB74B41A-BB28-4035-88A5-89F1066FE6BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB74B41A-BB28-4035-88A5-89F1066FE6BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A850C4D5-E200-4496-9CB6-495A8EC256F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A850C4D5-E200-4496-9CB6-495A8EC256F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A850C4D5-E200-4496-9CB6-495A8EC256F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A850C4D5-E200-4496-9CB6-495A8EC256F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 		{925E149C-EF2D-4BA1-B1CC-1D10BB2A9CFB} = {7D3F2A21-621C-496F-AD93-D36615437B4B}
 		{A22C4363-3258-477E-B326-99D4AD338452} = {7D3F2A21-621C-496F-AD93-D36615437B4B}
 		{AB74B41A-BB28-4035-88A5-89F1066FE6BC} = {7D3F2A21-621C-496F-AD93-D36615437B4B}
+		{A850C4D5-E200-4496-9CB6-495A8EC256F9} = {7D3F2A21-621C-496F-AD93-D36615437B4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1E3C294-9825-40FD-81F0-3BB6038DC092}
