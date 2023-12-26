@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using TodoProject.BusinessLayer.Abstract;
 using TodoProject.BusinessLayer.Concrete;
 using TodoProject.DataAccessLayer.Abstract;
 using TodoProject.DataAccessLayer.Concrete;
 using TodoProject.DataAccessLayer.EntityFramework;
 using TodoProject.EntityLayer.Concrete;
+
+using TodoProject.WebApi.Models.Jwt;
 using TodoProject.WebApi.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,30 +38,50 @@ builder.Services.AddScoped<ITodoService,TodoManager>();
 builder.Services.AddDbContext<Context>();
 
 // entitylayer altýndaki concrete de bu ikisi oluþturuldu
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>()
+    .AddDefaultTokenProviders(); 
 
 
-// Jwt
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+// identity þifre alýrken artýk zorunluluk yok
+builder.Services.Configure<IdentityOptions>(options =>
 {
-    opt.RequireHttpsMetadata = false;
-    opt.TokenValidationParameters = new TokenValidationParameters()
-    {   // bazi bilgileri appsettingsden alacak -- key vs.
-        // yayýnlayan dinleyenler -- signing key : gizli anahtar iþte -- lifetime : ne kadar sure sonra expire olsun
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ValidateIssuerSigningKey = true,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero,
-        ValidateIssuer = true,
-        ValidateAudience = true
-    };
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 5;
 });
 
 
 
 
+builder.Services.AddAuthentication(options => {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,  // yazýlan issuer eþleþiyor mu
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty))
+            
+        };
+    });
+
+// tum kontrollerlar appsettings'dekileri okuyabilsin
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+
+
+
+
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(opt =>
 {
@@ -83,10 +106,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// !!!!!!
+// auth added -- Authorization üstünde olmazsa çalýþmaz -- önce yetkilendirme sonra yonlendirme
+app.UseAuthentication();
+
 app.UseAuthorization();
 
-// auth added
-app.UseAuthentication();
+
 
 app.MapControllers();
 

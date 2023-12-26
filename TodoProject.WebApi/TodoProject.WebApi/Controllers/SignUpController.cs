@@ -21,9 +21,12 @@ namespace TodoProject.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> register(CreateNewUserDto dto)
         {
+            if (dto.Role == null) dto.Role = "user";
+
             var appUser = new AppUser()
             {
-                UserName = dto.UserName
+                UserName = dto.UserName,
+                Role = dto.Role
             };
 
             var result = await _userManager.CreateAsync(appUser,

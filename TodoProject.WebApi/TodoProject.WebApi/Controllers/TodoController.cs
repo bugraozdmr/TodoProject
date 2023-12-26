@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using TodoProject.BusinessLayer.Abstract;
 using TodoProject.EntityLayer.Concrete;
 
@@ -27,14 +28,17 @@ namespace TodoProject.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet()]
+        
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult TodoList()
         {
             var values = _todoService.TgetList();
-            return Ok(values);
+            return Ok(new { data = values });
         }
 
         [HttpPost]
+        [AllowAnonymous]    // eğer direkt hepsi authoriz. tanımlanmışsa bu hariç demek
         public IActionResult AddTodo(Todo todo)
         {
             todo.Time = DateTime.ParseExact(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
